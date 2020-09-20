@@ -1,0 +1,43 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ContextMenu.ViewModels;assembly=ContextMenu"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ContextMenu.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ContextMenu">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel>
+        <ListBox Items="{Binding Items}">
+            <ListBox.Styles>
+                <Style Selector="TextBlock">
+                    <Setter Property="ContextMenu">
+                        <ContextMenu>
+                            <MenuItem Header="Inner" Items="{Binding $parent[ListBox].DataContext.Items}">
+                                <MenuItem.Styles>
+                                    <Style Selector="MenuItem">
+                                        <Setter Property="Header" Value="{Binding}"/>
+                                        <Setter Property="Command" Value="{Binding $parent[ListBox].DataContext.MenuItemClicked}"/>
+                                    </Style>
+                                </MenuItem.Styles>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Setter>
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Command="{Binding Add}">Add</Button>
+        <Button Command="{Binding Remove}">Remove</Button>
+    </StackPanel>
+
+</Window>
